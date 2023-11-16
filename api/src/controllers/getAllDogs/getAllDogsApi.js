@@ -1,11 +1,10 @@
 const axios = require("axios");
-const BASE_URL = 'https://api.thedogapi.com/v1';
+const BASE_URL = 'https://api.thedogapi.com/v1/breeds';
 const IMAGE_URL = 'https://cdn2.thedogapi.com'
 
-
-const getAllDogs = async (req, res) => {
+const getDogsApi = async () => {
     try{
-        const { data } = await axios(`${BASE_URL}/breeds`);
+        const { data } = await axios(`${BASE_URL}`);
         const dogs = data.map (dog => {
         const idImagen = dog.reference_image_id;
             return {
@@ -19,10 +18,10 @@ const getAllDogs = async (req, res) => {
             };
         }) 
         return dogs;
-
-    }catch(error){
-        throw error 
-        };
+       
+        }catch(error){
+            throw error 
+            };
 }
 
-module.exports = { getAllDogs }
+module.exports = { getDogsApi }
