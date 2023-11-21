@@ -1,28 +1,19 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './Views/Home/Home';
-import Landing from './Views/Landing/Landing';
-import Details from './Views/Details/Details';
-import Form from './Views/Form/Form';
-
-import Navbar from './Components/Navbar/Navbar';
-
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import Home from './components/Home/Home';
+import DogDetail from './components/DogDetail/dogDetail';
+import DogForm from './components/DogForm/dogForm';
+import Landing from './components/LandingPage/LandingPage';
 
 function App() {
   return (
-    <div>
-      <BrowserRouter>
-        <Navbar/>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/form" element={<Form />} />
-          <Route path="/details/:id" element={<Details />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <Routes>
+        <Route path="/" Component={Landing} />
+        <Route path="/home" Component={Home} />
+        <Route path="/dogs/:id" Component={DogDetail} />
+        <Route path="/form" Component={DogForm} />
+    </Routes>
   );
 }
 
-export default App;
+export default App; 

@@ -1,10 +1,12 @@
 import axios from "axios";
 import {
     GET_DOGS,
-    CREATE_DOG,
-    TEMPERAMENT,
     FILTER_TEMPERAMENT,
-    FILTER_ORIGIN
+    FILTER_ORIGIN,
+    CREATE_DOG,
+    SORT_DOGS,
+    SET_DOG_DETAIL,
+    GET_TEMPERAMENTS
 } from "./actions-types";
 
 
@@ -23,20 +25,17 @@ export const searchDogs = () => {
     }
 }
 
-export const temperaments = () => {
-    const endPoint = "http://localhost:3001/temperaments";
-    return async (dispatch) =>{
-        try {
-            const { data } = await axios(endPoint);
-            return dispatch({
-                type: TEMPERAMENT,
-                payload: data
-            })
-        } catch (error) {
-            throw Error(error.message);
-        }
-    }
-}
+export const getTemperaments = () => {
+    return async (dispatch) => {
+      try {
+        const response = await axios.get('http://localhost:3001/temperaments');
+        const temperaments = response.data;
+        dispatch({ type: 'GET_TEMPERAMENTS', payload: temperaments });
+      } catch (error) {
+        console.error('Error fetching temperaments:', error);
+      }
+    };
+  };
 
 export const filterByTemperament = (selectedTemperament) => {
     return {
@@ -57,12 +56,37 @@ export const createDog = (dogData) => {
     return async (dispatch) => {
         try {
             const { data } = await axios.post(endPoint, dogData);
-            return dispatch({
+            dispatch({
                 type: CREATE_DOG,
-                payload: await searchDogs()
-            })
+                payload: data
+            });
+            dispatch(searchDogs());
         } catch (error) {
             throw Error(error.message);
         }
     }
 }
+
+export const sortDogs = (sortBy) => {
+    return {
+        type: SORT_DOGS,
+        payload: sortBy,
+    };
+}
+
+export const fetchDogDetail = (dogId) => {
+    return async (dispatch) => {
+      try {
+        const endPoint = `http://localhost:3001/dogs/${dogId}`;
+        const { data } = await axios(endPoint);
+        dispatch({
+          type: SET_DOG_DETAIL,
+          payload: data,
+        });
+      } catch (error) {
+        console.error('Error fetching dog detail:', error);
+        throw Error(error.message);
+      }
+    };
+  };
+  

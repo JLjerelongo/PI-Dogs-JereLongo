@@ -1,0 +1,29 @@
+.card-conteiner {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  width: 24vw;
+  height: 32vh;
+  backdrop-filter: blur(10px);
+  background-color:antiquewhite;
+  color: #3498db ;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.imagen{
+display: flex;
+width: 13vw;
+overflow: hidden;
+justify-content: center;
+align-items: center;
+}
+
+.img{
+  background-size: contain;
+  height: 32vh;
+}
+
+.card-content{
+  display: flex;
+  flex-direction: column;
+}

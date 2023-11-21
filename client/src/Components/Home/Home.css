@@ -1,0 +1,116 @@
+/* Estilos para el contenedor principal de la página */
+.home-container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url(../../images/Leonardo_Diffusion_XL_I_WANT_A_BACKGROUND_LIGHT_BLUE_COLOR_WIT_0.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* Estilos para el pie de página */
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Estilos para el título con fondo en forma de hueso */
+.title {
+  align-self: flex;
+  background-image: url('../../images/hueso-removebg-preview.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 35px;
+  color: black;
+  background-position: center;
+}
+
+/* Estilos para los contenedores de los botones y el selector */
+.botones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Añadido para centrar verticalmente los elementos */
+  margin-bottom: 20px;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #3498db;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.select-container {
+  display: flex;
+  align-items: center;
+  margin-right: 10px; /* Ajusta según sea necesario */
+}
+
+/* Estilos para el selector (select) */
+select {
+  padding: 10px 20px;
+  border: 2px solid #3498db;
+  border-radius: 5px;
+  background-color: white;
+  color: #3498db;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Estilos para el selector al pasar el ratón */
+select:hover {
+  background-color: #3498db;
+  color: #fff;
+}
+
+/* Estilos para los botones de filtros y orígenes */
+.filter-button,
+.sort-button,
+.origin-button {
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 2px solid #3498db;
+  border-radius: 5px;
+  background-color: white;
+  color: #3498db;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Estilos para los botones de filtros y orígenes al pasar el ratón */
+.filter-button:hover,
+.sort-button:hover,
+.origin-button:hover {
+  background-color: #3498db;
+  color: #fff;
+}
+
+/* Estilos para las cartas de perros */
+.cards {
+  display: flex;
+  flex-direction: row;
+  max-width: 100vw;
+  flex-wrap: wrap;
+}
+
+/* Estilos para el contenedor de paginación */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Estilos para los botones de paginación */
+.pagination-container button {
+  margin: 0 5px;
+}
+
+/* Estilos para el botón de paginación activo */
+.pagination-container button:hover {
+  background-color: #fff;
+  color: #3498db;
+}
+
+/* Estilos para el botón de paginación activo */
+.pagination-container button.current-page {
+  background-color: #fff;
+  color: #3498db;
+  font-weight: bold;
+}

@@ -2,16 +2,16 @@ const { Dog, Temperament } = require ('../../db')
 
 const createNewDog = async (dogData) => {
     try {
-        const { imagen, name, height, weight, life_span } = await dogData
-        if (!imagen || !name || !height || !weight || !life_span){ 
+        const { name, height, weight, life_span, temperaments } = await dogData
+        if ( !name || !height || !weight || !life_span || !temperaments){ 
             throw Error('Faltan datos.')
         }
         const newDog = await Dog.create ({
-            imagen,
             name,
             height,
             weight,
             life_span,
+            temperaments,
             isDB: true
         });
         if (dogData.temperaments && dogData.temperaments.length > 0) {

@@ -1,0 +1,56 @@
+
+
+.landing-container {
+  background-image: url(../../images/LandingBackground.jpg);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  background-position: center;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column; /* Cambia la dirección del eje principal a columna */
+  justify-content: space-between; /* Espacia los elementos uniformemente a lo largo del eje principal */
+  color: black;
+}
+
+.landing-container h1 {
+  align-self: flex-start ;
+  background-image: url('../../images/hueso-removebg-preview.png');
+  background-size:contain; /* Ajusta según sea necesario */
+  background-repeat: no-repeat;
+  padding: 100px; /* Ajusta según sea necesario para dar espacio al contenido dentro del hueso */
+  color: black; /* Cambia el color del texto para que sea visible en el fondo */
+  background-position: center;
+}
+
+.landing-container button {
+  background-color: transparent;
+  border: none;
+  padding: 80px 60px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  outline: none;
+  background-image: url('../../images/hueso-removebg-preview.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  background-position: center;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  outline: none !important;
+  transform-origin: center;
+  transition: transform 0.3s ease-in-out;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.landing-container button:hover {
+  /* Cambia la escala (tamaño) del botón al pasar el ratón por encima */
+  transform: scale(1.1);
+}
