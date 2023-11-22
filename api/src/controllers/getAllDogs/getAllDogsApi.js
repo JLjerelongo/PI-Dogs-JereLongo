@@ -11,8 +11,8 @@ const getDogsApi = async () => {
                 id: dog.id,
                 nombre: dog.name,
                 imagen: (`${IMAGE_URL}/images/${idImagen}.jpg`),
-                altura: dog.height,
-                peso: dog.weight,
+                altura: dog.height.metric,
+                peso: dog.weight.metric,
                 longevidad: dog.life_span,
                 temperamento: dog.temperament ? dog.temperament.split(', ') : [],
             };

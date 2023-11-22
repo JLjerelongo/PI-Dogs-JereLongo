@@ -1,4 +1,4 @@
-const { createNewDog } = require('../controllers/postDogs/postDogs');
+const { createNewDog } = require('../controllers/postDogs/createDogController');
 
 const createNewDogHandler = async (req, res) => {
     const dogData = req.body;

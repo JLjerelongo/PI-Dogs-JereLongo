@@ -14,10 +14,12 @@ const DogForm = () => {
   }, [dispatch]);
 
   const [formData, setFormData] = useState({
-    name: '',
-    weight: '',
-    height: '',
-    lifespan: '',
+    nombre: '',
+    peso_minimo: '',
+    peso_maximo: '',
+    altura_minima: '',
+    altura_maxima: '',
+    longevidad: '',
     temperaments: [],
   });
 
@@ -37,33 +39,38 @@ const DogForm = () => {
       });
     }
   };
-
+  
   const URL = "http://localhost:3001/dogs";
-
-  const onSubmit = async () => {
+  
+  const onSubmit = async (event) => {
     try {
-      const { name, weight, height, lifespan, temperaments } = formData;
-      const data = await axios.post(URL, {
-        name,
-        weight,
-        height,
-        lifespan,
+      event.preventDefault()
+      console.log(formData);
+      const { nombre, peso, altura, longevidad, temperaments } = formData;
+      const data = (await axios.post(URL, {
+        nombre,
+        peso,
+        altura,
+        longevidad,
         temperaments,
-      });
+      })).data
+      if (data.status) {
+        setFormData({
+          name: '',
+          weight: '',
+          height: '',
+          lifespan: '',
+          temperaments: [],
+        });
+      }
       console.log('Datos del formulario enviado:', data);
       // Reiniciar el formulario después de un envío exitoso
-      setFormData({
-        name: '',
-        weight: '',
-        height: '',
-        lifespan: '',
-        temperaments: [],
-      });
     } catch (error) {
       console.error('Error al enviar el formulario:', error.message);
       // Mostrar un mensaje de error o manejarlo de manera amigable para el usuario
     }
   };
+
 
   return (
     <div className="form-container">
@@ -74,23 +81,34 @@ const DogForm = () => {
       <form onSubmit={onSubmit}>
         <label>
           Nombre:
-          <input type="text" name="name" value={formData.name} onChange={handleChange} />
+          <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} />
         </label>
 
         <label>
-          Peso:
-          <input type="text" name="weight" value={formData.weight} onChange={handleChange} />
+          Altura minima:
+          <input type="text" name="altura" value={formData.altura} onChange={handleChange} />
         </label>
 
         <label>
-          Altura:
-          <input type="text" name="height" value={formData.height} onChange={handleChange} />
+          Altura maxima:
+          <input type="text" name="altura" value={formData.altura} onChange={handleChange} />
+        </label>
+
+        <label>
+          Peso minimo:
+          <input type="text" name="peso" value={formData.peso} onChange={handleChange} />
+        </label>
+
+        <label>
+          Peso maximo:
+          <input type="text" name="peso" value={formData.peso} onChange={handleChange} />
         </label>
 
         <label>
           Años de vida:
-          <input type="text" name="lifespan" value={formData.lifespan} onChange={handleChange} />
+          <input type="text" name="longevidad" value={formData.longevidad} onChange={handleChange} />
         </label>
+
 
         <label>
           Temperamentos:
@@ -108,7 +126,7 @@ const DogForm = () => {
           </select>
         </label>
 
-        <button type="submit">Crear Raza</button>
+        <button type='submit' >Crear Raza</button>
       </form>
     </div>
   );

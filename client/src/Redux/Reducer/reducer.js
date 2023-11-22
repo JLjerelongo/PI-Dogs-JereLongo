@@ -5,13 +5,15 @@ import {
   CREATE_DOG,
   SORT_DOGS,
   SET_DOG_DETAIL,
-  FILTER_TEMPERAMENT, // Asegúrate de tener esta acción en tus actionTypes
+  FILTER_TEMPERAMENT,
+  GET_DB
 } from "../Actions/actions-types";
 
 let initialState = {
   allDogs: [],
   dogs: [],
   temperaments: [],
+  dogsDb: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -30,26 +32,10 @@ const reducer = (state = initialState, action) => {
       };
 
     case FILTER_ORIGIN:
-      if (action.payload === "AllOrigins") {
         return {
           ...state,
-          dogs: state.allDogs,
+          dogs: [...state.dogsDb]
         };
-      }
-      if (action.payload === "Database") {
-        const filteredOrigin = state.allDogs.filter((dog) => dog.isDB);
-        return {
-          ...state,
-          dogs: filteredOrigin,
-        };
-      }
-      if (action.payload === "API") {
-        const filteredOrigin = state.allDogs.filter((dog) => !dog.isDB);
-        return {
-          ...state,
-          dogs: filteredOrigin,
-        };
-      }
 
     case FILTER_TEMPERAMENT:
       if (action.payload === "") {
@@ -90,6 +76,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         dogDetail: action.payload,
       };
+
+      case GET_DB:
+        return{
+          ...state,
+          dogsDb: action.payload
+        }
 
     default:
       return {

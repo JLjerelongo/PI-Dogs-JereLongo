@@ -6,9 +6,9 @@ const getTemperamentsFromApi = async () => {
     try {
         const { data } = await axios(`${BASE_URL}/breeds`);
         let temperaments = [];
-        data.forEach(dog => {
-            if (dog.temperament){ 
-                const temperamentos = dog.temperament.split (', ')
+        data.forEach(breed => {
+            if (breed.temperament){ 
+                const temperamentos = breed.temperament.split (', ')
             temperamentos.forEach(temperamento => {
                 if (!temperaments.includes(temperamento)) {
                     temperaments.push(temperamento)

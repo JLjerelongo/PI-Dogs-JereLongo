@@ -1,4 +1,4 @@
-const { getTemperamentsFromApi } = require ('../controllers/getTemperaments/getTemperaments');
+const { getTemperamentsFromApi } = require ('../controllers/getTemperaments/getTemperamentsController');
 
 const getTemperamentsHandler = async (req, res) => { 
     try {
