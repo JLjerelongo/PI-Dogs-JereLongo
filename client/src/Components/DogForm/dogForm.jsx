@@ -46,7 +46,10 @@ const DogForm = () => {
     try {
       event.preventDefault()
       console.log(formData);
-      const { nombre, peso, altura, longevidad, temperaments } = formData;
+      const { nombre, peso_minimo, peso_maximo, altura_minima, altura_maxima, longevidad, temperaments } = formData;
+      const peso = `${peso_minimo} - ${peso_maximo}`;
+      const altura = `${altura_minima} - ${altura_maxima}`;
+
       const data = (await axios.post(URL, {
         nombre,
         peso,
@@ -54,19 +57,24 @@ const DogForm = () => {
         longevidad,
         temperaments,
       })).data
+      console.log(data);
       if (data.status) {
         setFormData({
-          name: '',
-          weight: '',
-          height: '',
-          lifespan: '',
+          nombre: '',
+          peso_minimo: '',
+          peso_maximo: '',
+          altura_minima: '',
+          altura_maxima: '',
+          longevidad: '',
           temperaments: [],
         });
       }
       console.log('Datos del formulario enviado:', data);
+      window.alert('Datos del formulario enviado:', data);
       // Reiniciar el formulario después de un envío exitoso
     } catch (error) {
       console.error('Error al enviar el formulario:', error.message);
+      window.alert('Error al enviar el formulario:', error.message);
       // Mostrar un mensaje de error o manejarlo de manera amigable para el usuario
     }
   };
@@ -86,22 +94,22 @@ const DogForm = () => {
 
         <label>
           Altura minima:
-          <input type="text" name="altura" value={formData.altura} onChange={handleChange} />
+          <input type="text" name="altura_minima" value={formData.altura_minima} onChange={handleChange} />
         </label>
 
         <label>
           Altura maxima:
-          <input type="text" name="altura" value={formData.altura} onChange={handleChange} />
+          <input type="text" name="altura_maxima" value={formData.altura_maxima} onChange={handleChange} />
         </label>
 
         <label>
           Peso minimo:
-          <input type="text" name="peso" value={formData.peso} onChange={handleChange} />
+          <input type="text" name="peso_minimo" value={formData.peso_minimo} onChange={handleChange} />
         </label>
 
         <label>
           Peso maximo:
-          <input type="text" name="peso" value={formData.peso} onChange={handleChange} />
+          <input type="text" name="peso_maximo" value={formData.peso_maximo} onChange={handleChange} />
         </label>
 
         <label>

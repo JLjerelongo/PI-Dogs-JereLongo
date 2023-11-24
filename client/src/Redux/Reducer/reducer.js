@@ -1,20 +1,26 @@
 import {
   GET_DOGS,
   GET_TEMPERAMENTS,
-  FILTER_ORIGIN,
   CREATE_DOG,
   SORT_DOGS,
   SET_DOG_DETAIL,
   FILTER_TEMPERAMENT,
-  GET_DB
+  GET_DB,
+  DOG_BY_NAME,
+  DB,
+  API
 } from "../Actions/actions-types";
 
 let initialState = {
   allDogs: [],
+  allDogsCopy: [],
   dogs: [],
   temperaments: [],
-  dogsDb: []
+  dogsDb: [],
+  dogByName: []
 };
+
+
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -23,6 +29,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         allDogs: action.payload,
         dogs: action.payload,
+        allDogsCopy: action.payload
       };
 
     case GET_TEMPERAMENTS:
@@ -31,11 +38,11 @@ const reducer = (state = initialState, action) => {
         temperaments: action.payload,
       };
 
-    case FILTER_ORIGIN:
-        return {
-          ...state,
-          dogs: [...state.dogsDb]
-        };
+    case DB:
+      return {
+        ...state,
+        dogs: [...state.dogsDb]
+      };
 
     case FILTER_TEMPERAMENT:
       if (action.payload === "") {
@@ -60,16 +67,31 @@ const reducer = (state = initialState, action) => {
       };
 
     case SORT_DOGS:
+      const { field, order } = action.payload;
       const sortedDogs = [...state.dogs];
-      if (action.payload === "asc") {
-        sortedDogs.sort((a, b) => a.nombre.localeCompare(b.nombre));
-      } else if (action.payload === "desc") {
-        sortedDogs.sort((a, b) => b.nombre.localeCompare(a.nombre));
+
+      if (field === 'nombre') {
+        sortedDogs.sort((a, b) => (order === 'asc' ? a.nombre.localeCompare(b.nombre) : b.nombre.localeCompare(a.nombre)));
+      } else if (field === 'peso') {
+        sortedDogs.sort((a, b) => {
+          const parseWeight = (weight) => {
+            const [min, max] = weight.split(' - ');
+            const parsedWeight = (parseInt(min) + parseInt(max)) / 2;
+            return parsedWeight;
+          };
+
+          const weightA = parseWeight(a.peso);
+          const weightB = parseWeight(b.peso);
+
+          return order === 'asc' ? weightA - weightB : weightB - weightA;
+        });
       }
+
       return {
         ...state,
         dogs: sortedDogs,
       };
+
 
     case SET_DOG_DETAIL:
       return {
@@ -77,11 +99,25 @@ const reducer = (state = initialState, action) => {
         dogDetail: action.payload,
       };
 
-      case GET_DB:
+    case GET_DB:
+      return {
+        ...state,
+        dogsDb: action.payload
+      }
+
+      case API:
         return{
           ...state,
-          dogsDb: action.payload
+          dogs: state.allDogs
         }
+
+      case DOG_BY_NAME:
+      return {
+        ...state,
+        dogs: action.payload,
+        allDogsCopy: action.payload
+      };
+
 
     default:
       return {

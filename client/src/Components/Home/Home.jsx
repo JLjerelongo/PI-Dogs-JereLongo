@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  searchDogs,
+  fetchDogs,
   filterByTemperament,
   originFilter,
   sortDogs,
   getTemperaments,
   fetchDogsDb,
+  dogsByName
 } from '../../Redux/Actions/actions';
 import { Link } from 'react-router-dom';
 import './Home.css';
@@ -14,73 +15,78 @@ import './Home.css';
 import NavBar from '../NavBar/NavBar';
 import SearchBar from '../SearchBar/SearchBar';
 import Card from '../Card/Card';
-import axios from 'axios';
 
 const Home = () => {
   const dispatch = useDispatch();
   const dogs = useSelector((state) => state.dogs);
+  const allDogs = useSelector((state) => state.allDogs)
   const temperaments = useSelector((state) => state.temperaments);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchResults, setSearchResults] = useState([]);
   const [selectedTemperament, setSelectedTemperament] = useState('');
   const [filterOption, setFilterOption] = useState({
     field: 'nombre',
     order: 'asc',
   });
 
-  useEffect(() => {
-    dispatch(fetchDogsDb());
-    dispatch(searchDogs());
-    dispatch(getTemperaments());
-  }, []);
+  console.log("soy el home:", dogs);
 
-  const handleSearch = (searchTerm) => {
-    // Lógica para manejar la búsqueda de perros
-    // Puedes filtrar la lista de perros según el término de búsqueda
-    // Actualiza el estado o realiza la lógica necesaria en tu aplicación
+  useEffect(() => {
+    dispatch(fetchDogs());
+    dispatch(fetchDogsDb());
+    dispatch(getTemperaments());
+  }, [dispatch]);
+
+  // Lógica para manejar la búsqueda de perros
+  const onSearch = (name) => {
+    dispatch(dogsByName(name))
   };
+
+
+  // Si hay resultados de búsqueda, mostrar esos resultados
+  if (searchResults.length > 0) {
+    dogsToPaginate = searchResults;
+  }
 
   const handleFilterByTemperament = (selectedTemperament) => {
     setSelectedTemperament(selectedTemperament);
     dispatch(filterByTemperament(selectedTemperament));
   };
 
-  const handleFilterByOrigin = () => {
-    dispatch(originFilter());
+  const handleFilterByOrigin = (origin) => {
+    dispatch(originFilter(origin));
   };
 
-  const handleSort = (sortBy) => {
-    dispatch(sortDogs(sortBy));
+  const handleSort = (field) => {
+    const newOrder = filterOption.field === field && filterOption.order === 'asc' ? 'desc' : 'asc';
+    setFilterOption({ field, order: newOrder });
+
+    if (field === 'nombre' || field === 'peso') {
+      dispatch(sortDogs({ field, order: newOrder }));
+    }
   };
 
-  // Lógica para calcular el índice de inicio y fin para la paginación
+
   const dogsPerPage = 8;
   const indexOfLastDog = currentPage * dogsPerPage;
   const indexOfFirstDog = indexOfLastDog - dogsPerPage;
   const currentDogs = dogs?.slice(indexOfFirstDog, indexOfLastDog);
 
-  // Lógica para renderizar los botones de paginación
   const pageNumbers = Array.from({ length: Math.ceil(dogs?.length / dogsPerPage) }, (_, i) => i + 1);
 
-  const renderPageNumbers = pageNumbers.map((number) => (
-    <button
-      key={number}
-      onClick={() => setCurrentPage(number)}
-      className={currentPage === number ? 'current-page' : ''}
-    >
-      {number}
-    </button>
-  ));
+  const renderOrderArrow = () => (
+    filterOption.order === 'asc' ? <span>&uarr;</span> : <span>&darr;</span>
+  );
 
   return (
     <div className="home-container">
       <div className="footer">
         <NavBar />
         <h1 className="title">WikiDogs</h1>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={onSearch} />
       </div>
 
       <div className='botones'>
-        {/* Mueve el selector antes de los botones */}
         <div className="select-container">
           <select onChange={(event) => handleFilterByTemperament(event.target.value)}>
             <option value="">Selecciona un temperamento</option>
@@ -92,31 +98,46 @@ const Home = () => {
           </select>
         </div>
 
-        {/* Botones restantes */}
-        <div className="left-button-container">
-          <button className="sort-button" onClick={() => handleSort('asc')}>Ordenar Ascendente</button>
-          <button className="sort-button" onClick={() => handleSort('desc')}>Ordenar Descendente</button>
+        <div className="right-button-container">
+          <button className="origin-button" onClick={() => handleFilterByOrigin('Todos')}>Mostrar Todos</button>
+          <button className="origin-button" onClick={() => handleFilterByOrigin('DB')}>Base de Datos</button>
+          <button className="origin-button" onClick={() => handleFilterByOrigin('API')}>API</button>
         </div>
 
-        <div className="right-button-container">
-          <button className="origin-button" onClick={() => handleFilterByOrigin(dogs)}>Mostrar Todos</button>
-          <button className="origin-button" onClick={() => handleFilterByOrigin()}>Base de Datos</button>
-          <button className="origin-button" onClick={() => handleFilterByOrigin('API')}>API</button>
+
+
+        <div className="left-button-container">
+          <button className="sort-button" onClick={() => handleSort('nombre')}>
+            Ordenar por Nombre {filterOption.field === 'nombre' && renderOrderArrow()}
+          </button>
+          <button className="sort-button" onClick={() => handleSort('peso')}>
+            Ordenar por Peso {filterOption.field === 'peso' && renderOrderArrow()}
+          </button>
         </div>
       </div>
 
-
       <div className="cards">
-        {currentDogs?.map((dog) => (
+
+        { currentDogs.length? currentDogs.map((dog) => (
           <Link to={`/dogs/${dog?.id}`} key={dog?.id}>
             <Card image={dog?.imagen} name={dog?.nombre} temperaments={dog?.temperamento} weight={dog?.peso} />
           </Link>
-        ))}
+        )):null}
       </div>
 
-      <div className="pagination-container">{renderPageNumbers}</div>
+      <div className="pagination-container">{pageNumbers.map((number) => (
+        <button
+          key={number}
+          onClick={() => setCurrentPage(number)}
+          className={currentPage === number ? 'current-page' : ''}
+        >
+          {number}
+        </button>
+      ))}</div>
     </div>
   );
 };
 
 export default Home;
+
+   

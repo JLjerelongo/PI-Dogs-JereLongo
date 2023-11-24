@@ -1,6 +1,5 @@
-const { searchDogsByName } = require("../controllers/getDogsByName/searchDogsByNameController");
+const { getDogsByName } = require("../controllers/getDogsByName/searchDogsByNameController");
 
-searchDogsByName
 
 const getDogsByNameHandler = async (req, res) => {
     const { name } = req.query;

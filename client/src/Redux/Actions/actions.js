@@ -2,29 +2,55 @@ import axios from "axios";
 import {
     GET_DOGS,
     FILTER_TEMPERAMENT,
-    FILTER_ORIGIN,
     CREATE_DOG,
     SORT_DOGS,
     SET_DOG_DETAIL,
     GET_DB,
-    GET_TEMPERAMENTS
+    GET_TEMPERAMENTS,
+    DOG_BY_NAME,
+    API,
+    DB
 } from "./actions-types";
 
 
-export const searchDogs = () => {
+export const fetchDogs = () => {
+    const endpoint = "http://localhost:3001/dogs";
     return async (dispatch) => {
-        try {
-            const endPoint = "http://localhost:3001/dogs";
-            const { data } = await axios(endPoint);
-            return dispatch({
-                type: GET_DOGS,
-                payload: data
-            })
-        } catch (error) {
-            throw Error(error.message);
-        }
+      try {
+        const { data } = await axios(endpoint);
+        console.log(data);
+        return dispatch({
+          type: GET_DOGS,
+          payload: data,
+        });
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+  };
+
+  export const fetchDogsApi = () => {
+    return {
+        type: fetchDogsApi,
     }
-}
+  }
+
+  export const dogsByName = (name) => {
+    const endpoint = `http://localhost:3001/dogs/name/?name=${name}`;
+    return async (dispatch) => {
+      try {
+        const { data } = await axios(endpoint);
+        console.log(data);
+        return dispatch({
+          type: DOG_BY_NAME,
+          payload: data,
+        });
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+  };
+
 
 export const getTemperaments = () => {
     return async (dispatch) => {
@@ -45,9 +71,9 @@ export const filterByTemperament = (selectedTemperament) => {
     }
 }
 
-export const originFilter = () => {
+export const originFilter = (origin) => {
     return {
-        type: FILTER_ORIGIN
+        type: origin
     }
 }
 
@@ -69,10 +95,11 @@ export const createDog = (dogData) => {
 
 export const sortDogs = (sortBy) => {
     return {
-        type: SORT_DOGS,
-        payload: sortBy,
+      type: SORT_DOGS,
+      payload: sortBy,
     };
-}
+  };
+  
 
 export const fetchDogDetail = (dogId) => {
     return async (dispatch) => {

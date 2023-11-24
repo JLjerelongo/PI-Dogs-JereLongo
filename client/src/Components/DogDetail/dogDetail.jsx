@@ -4,6 +4,7 @@ import { fetchDogDetail } from '../../Redux/Actions/actions'; // Ajusta según l
 import { useParams } from 'react-router-dom';
 import NavBar from '../NavBar/NavBar';
 import './dogDetail.css'
+import viole from  "../../images/IMG-20220330-WA0044.jpg"
 
 const DogDetail = () => {
   const dispatch = useDispatch();
@@ -22,8 +23,10 @@ const DogDetail = () => {
   }, [dispatch, id]);
   
   console.log(dog);
+
+  const defaultImage = viole 
   
-  const image = `https://cdn2.thedogapi.com/images/${dog?.reference_image_id}.jpg`
+  const image = `https://cdn2.thedogapi.com/images/${dog?.imagen}.jpg`
 
   return (
     <div className="detail-container">
@@ -32,15 +35,22 @@ const DogDetail = () => {
         <h1 className='title'>WikiDogs</h1>
       </div>
       <div className='card'>
-        <h2>{dog?.name}</h2>
-        <p>Altura: {dog?.height.metric}</p>
-        <p>Peso: {dog?.weight.metric}</p>
-        <p>Años de vida: {dog?.life_span}</p>
-        <p>Temperamentos: {dog?.temperament}</p>
+        <h2>{dog?.nombre}</h2>
+        <p>Altura: {dog?.altura}</p>
+        <p>Peso: {dog?.peso}</p>
+        <p>Años de vida: {dog?.longevidad}</p>
+        <p>Temperamentos: {dog?.temperamento.join(", ")}</p>
         {loading ? (
           <div>Cargando imagen...</div>
         ) : (
-          <img src={image} alt={dog?.name} loading='lazy'/>
+          <img
+            src={image}
+            alt={dog?.name}
+            loading="lazy"
+            onError={(e) => {
+              e.target.src = defaultImage;
+            }}
+          />
         )}
       </div>
     </div>
