@@ -7,7 +7,8 @@ import {
   sortDogs,
   getTemperaments,
   fetchDogsDb,
-  dogsByName
+  dogsByName,
+  filterApi
 } from '../../Redux/Actions/actions';
 import { Link } from 'react-router-dom';
 import './Home.css';
@@ -57,6 +58,10 @@ const Home = () => {
     dispatch(originFilter(origin));
   };
 
+  const handleFilterApi = () =>{
+    dispatch(filterApi())
+  }
+
   const handleSort = (field) => {
     const newOrder = filterOption.field === field && filterOption.order === 'asc' ? 'desc' : 'asc';
     setFilterOption({ field, order: newOrder });
@@ -101,7 +106,7 @@ const Home = () => {
         <div className="right-button-container">
           <button className="origin-button" onClick={() => handleFilterByOrigin('Todos')}>Mostrar Todos</button>
           <button className="origin-button" onClick={() => handleFilterByOrigin('DB')}>Base de Datos</button>
-          <button className="origin-button" onClick={() => handleFilterByOrigin('API')}>API</button>
+          <button className="origin-button" onClick={() => handleFilterApi()}>API</button>
         </div>
 
 

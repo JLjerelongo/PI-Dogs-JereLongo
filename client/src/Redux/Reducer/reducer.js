@@ -105,10 +105,16 @@ const reducer = (state = initialState, action) => {
         dogsDb: action.payload
       }
 
-      case API:
+      case "Todos":
         return{
           ...state,
           dogs: state.allDogs
+        }
+
+      case API:
+        return{
+          ...state,
+          dogs: action.payload
         }
 
       case DOG_BY_NAME:

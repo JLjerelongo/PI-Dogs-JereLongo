@@ -29,11 +29,11 @@ export const fetchDogs = () => {
     };
   };
 
-  export const fetchDogsApi = () => {
-    return {
-        type: fetchDogsApi,
-    }
-  }
+//   export const fetchDogsApi = () => {
+//     return {
+//         type: fetchDogsApi,
+//     }
+//   }
 
   export const dogsByName = (name) => {
     const endpoint = `http://localhost:3001/dogs/name/?name=${name}`;
@@ -135,3 +135,22 @@ export const fetchDogsDb = () => {
         }
     }
 }
+
+export const filterApi = () => {
+    const endpoint = "http://localhost:3001/dogs";
+    return async (dispatch) => {
+      try {
+
+        const { data } = await axios(endpoint);
+        const filtrados = await data.filter((dog) => 
+            !isNaN(dog.id)
+        )
+        return dispatch({
+          type: GET_DOGS,
+          payload: filtrados,
+        });
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+  };
